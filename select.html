@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css">
+		<link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css">
+		<link rel="stylesheet" href="bootstrap-select/dist/css/bootstrap-select.min.css">
+		<style>
+			.bootstrap-select .dropdown-header {
+			    cursor: pointer;
+			}
+			
+		</style>
+		
+	</head>
+	<body>
+		<span class="fa">&#xf0dd;</span></br>
+		<select id="basic" class="selectpicker show-tick form-control">
+          <option>cow</option>
+          <option data-content="<span class='fa'>&#xf0dd;</span>" data-subtext="option subtext">bull</option>
+          <option class="get-class" disabled>ox</option>
+          <optgroup label="test" data-subtext="optgroup subtext">
+            <option>ASD</option>
+            <option selected>Bla</option>
+            <option>Ble</option>
+          </optgroup>
+        </select>
+		<select class="form-control" id="sEligibleBranchAdd" multiple="multiple">
+				                     <optgroup class="closed" data-subtext="V" label="All FY"><option value="1_1">FY IT</option><option value="1_2">FY COMP</option><option value="1_3">FY MECH</option><option value="1_4">FY E&amp;TC</option><option value="1_5">FY INSTRU</option><option value="1_6">FY ELEC</option><option value="1_7">FY PLANNING</option><option value="1_8">FY CIVIL</option><option value="1_9">FY PROD</option><option value="1_10">FY META</option></optgroup><optgroup data-subtext="V" class="closed" label="All SY"><option value="2_1">SY IT</option><option value="2_2">SY COMP</option><option value="2_3">SY MECH</option><option value="2_4">SY E&amp;TC</option><option value="2_5">SY INSTRU</option><option value="2_6">SY ELEC</option><option value="2_7">SY PLANNING</option><option value="2_8">SY CIVIL</option><option value="2_9">SY PROD</option><option value="2_10">SY META</option></optgroup><optgroup data-subtext="V" class="closed" label="All TY"><option value="3_1">TY IT</option><option value="3_2">TY COMP</option><option value="3_3">TY MECH</option><option value="3_4">TY E&amp;TC</option><option value="3_5">TY INSTRU</option><option value="3_6">TY ELEC</option><option value="3_7">TY PLANNING</option><option value="3_8">TY CIVIL</option><option value="3_9">TY PROD</option><option value="3_10">TY META</option></optgroup><optgroup data-subtext="V" class="closed" label="All BTech"><option value="4_1">BTech IT</option><option value="4_2">BTech COMP</option><option value="4_3">BTech MECH</option><option value="4_4">BTech E&amp;TC</option><option value="4_5">BTech INSTRU</option><option value="4_6">BTech ELEC</option><option value="4_7">BTech PLANNING</option><option value="4_8">BTech CIVIL</option><option value="4_9">BTech PROD</option><option value="4_10">BTech META</option></optgroup></select>
+		<script src="vendor/jquery/jquery.js"></script>
+		<script src="vendor/popper.js/umd/popper.min.js"> </script>
+	    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+		<script src="bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+		<script>
+			window.onload = function () {
+				$('#sEligibleBranchAdd').selectpicker();
+				$('.selectpicker').selectpicker({
+				  style: 'btn-info'
+				});
+				$(function (){
+					// for some strange reason selectpicker prevents the click-event. so just use mouseup
+					// when clicking on an optgroup "label", toggle it's "children"
+					$(document).on("mouseup", ".text-muted", function (){
+						var el = this.parentElement.parentElement;
+						var classList = el.classList;
+						for(var i = 0;i < classList.length;i++) {
+							if(classList[i].indexOf("optgroup-") != -1) {
+								var className = classList[i];
+								break;
+							}
+						}
+						var els = el.parentElement.getElementsByClassName(className);
+						Array.prototype.map.call(els, function (el) {el.style.display = el.style.display === "none" ? "" : "none";});
+						el.style.display = el.style.display === "none" ? "" : "none";
+					});
+					// initially close all optgroups that have the class "closed"
+					var flag = 1;
+					$(document).on("shown.bs.select", function (){
+						if(flag) {
+							Array.prototype.map.call(document.getElementsByClassName("dropdown-header closed"), function (el) {
+							var classList = el.classList;
+							for(var i = 0;i < classList.length;i++) {
+								if(classList[i].indexOf("optgroup-") != -1) {
+									var className = classList[i];
+									break;
+								}
+							}
+							var els = el.parentElement.getElementsByClassName(className);
+							Array.prototype.map.call(els, function (el) {el.style.display = el.style.display === "none" ? "" : "none";});
+							el.style.display = el.style.display === "none" ? "" : "none";
+							});
+							Array.prototype.map.call(document.getElementsByClassName("text-muted"),function (el) {el.innerHTML = "<i style='font-size:20px;' class='fa'>&#xf0dd;</i>";});
+						}
+						flag = 0;
+					});
+					$(document).on("click", ".dropdown-header", function () {
+						var val = $('.selectpicker').val();
+						var classList = this.classList;
+						for(var i = 0;i < classList.length;i++) {
+							if(classList[i].indexOf("optgroup-") != -1) {
+								var className = classList[i];
+								break;
+							}
+						}
+						//get values of each option in optgroup
+						//add those values to val array
+						//set select element value
+						//add .selected class to each option to show select tick
+					})
+				});
+			}
+		</script>
+	</body>
+</html>
